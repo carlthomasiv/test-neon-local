@@ -20,6 +20,7 @@ async function renderPage(req, res, dataFetcher) {
     const template = await vite.transformIndexHtml(url, fs.readFileSync('index.html', 'utf-8'));
     const { render } = await vite.ssrLoadModule('/src/entry-server.jsx');
 
+    // Get data using the provided data fetcher function
     const data = await dataFetcher(req);
 
     const script = `<script>window.__data__=${JSON.stringify(data)}</script>`;
@@ -27,7 +28,11 @@ async function renderPage(req, res, dataFetcher) {
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (error) {
     console.error('Rendering error:', error);
-    res.status(500).end(error);
+    // Convert error to a proper error page
+    res
+      .status(500)
+      .set({ 'Content-Type': 'text/html' })
+      .end(`<html><body><h1>Server Error</h1><p>${error.toString()}</p></body></html>`);
   }
 }
 
