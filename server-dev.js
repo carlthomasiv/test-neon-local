@@ -31,6 +31,11 @@ app.use('*', async (req, res) => {
   }
 });
 
-app.listen(4173, () => {
-  console.log('http://localhost:4173.');
+// app.listen(4173, () => {
+//   console.log('http://localhost:4173.');
+// });
+
+const PORT = 4173;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
